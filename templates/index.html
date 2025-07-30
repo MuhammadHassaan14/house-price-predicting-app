@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>California House Price Predictor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(-45deg, #3b2f80, #231f60, #161244, #0a0a2a);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px; /* 🟢 Add vertical spacing from top/bottom */
+      box-sizing: border-box;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;  /* 🟢 Prevent it from growing too tall */
+      overflow-y: auto;  /* ✅ Scroll inside the box if needed */
+      color: white;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-weight: 600;
+      color: #f0f0f0;
+    }
+
+    form label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: 500;
+    }
+
+    form input, form select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    form input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    form button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
+      background-color: #6d44f2;
+      color: white;
+      border: none;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    form button:hover {
+      background-color: #5a38c8;
+    }
+
+    .result {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 18px;
+      color: #90ee90;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>🏠 California House Price Predictor</h2>
+    <form method="POST" action="/predict">
+      <label for="average_rooms">Average Rooms</label>
+      <input type="number" name="average_rooms" step="any" placeholder="e.g., 5.5" required>
+
+      <label for="population">Population</label>
+      <input type="number" name="population" step="any" placeholder="e.g., 1500" required>
+
+      <label for="latitude">Latitude</label>
+      <input type="number" name="latitude" step="any" placeholder="e.g., 34.2" required>
+
+      <label for="longitude">Longitude</label>
+      <input type="number" name="longitude" step="any" placeholder="e.g., -118.5" required>
+
+      <label for="median_income">Median Income</label>
+      <input type="number" name="median_income" step="any" placeholder="e.g., 4.5" required>
+
+      <label for="housing_median_age">Housing Median Age</label>
+      <input type="number" name="housing_median_age" step="any" placeholder="e.g., 25" required>
+
+      <label for="total_bedrooms">Total Bedrooms</label>
+      <input type="number" name="total_bedrooms" step="any" placeholder="e.g., 1000" required>
+
+      <label for="households">Households</label>
+      <input type="number" name="households" step="any" placeholder="e.g., 400" required>
+
+      <label for="ocean_proximity">Ocean Proximity</label>
+      <select name="ocean_proximity" required>
+        <option value="INLAND">INLAND</option>
+        <option value="NEAR BAY">NEAR BAY</option>
+        <option value="NEAR OCEAN">NEAR OCEAN</option>
+        <option value="ISLAND">ISLAND</option>
+        <option value="<1H OCEAN">&lt;1H OCEAN</option>
+      </select>
+
+      <button type="submit">Predict Price</button>
+    </form>
+
+    {% if prediction_text %}
+      <div class="result">{{ prediction_text }}</div>
+    {% endif %}
+  </div>
+
+</body>
+</html>
